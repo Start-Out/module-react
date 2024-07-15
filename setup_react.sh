@@ -1,9 +1,18 @@
 #!/bin/bash
 
-# Create a new React project with TypeScript
-npx create-react-app startout-react-app --template typescript
+# Set default app name
+APP_NAME=${MODULE_REACT_APP_NAME:-startout-react-app}
 
-cd startout-react-app
+USE_TYPESCRIPT=${MODULE_REACT_USE_TYPESCRIPT:-true}
+
+# Create a new React project with or without TypeScript based on the environment variable
+if [ "$USE_TYPESCRIPT" = "true" ]; then
+  npx create-react-app $APP_NAME --template typescript
+else
+  npx create-react-app $APP_NAME
+fi
+
+cd $APP_NAME
 
 # Install Prettier, ESLint, and necessary plugins
 npm install --save-dev prettier eslint-config-prettier eslint-plugin-prettier
@@ -11,9 +20,11 @@ npm install --save-dev prettier eslint-config-prettier eslint-plugin-prettier
 # Create Prettier configuration file
 cat <<EOT > .prettierrc
 {
+  "semi": false,
   "singleQuote": true,
   "trailingComma": "all",
-  "printWidth": 80
+  "printWidth": 80,
+  "tabWidth": 4
 }
 EOT
 
