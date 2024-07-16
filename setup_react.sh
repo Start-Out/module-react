@@ -63,15 +63,15 @@ cat <<EOT > .eslintrc.json
 EOT
 
 # Update package.json to add lint and format scripts
-#npx json -I -f package.json -e 'this.scripts.lint="eslint \"src/**/*.{js,ts,tsx}\""'
-#npx json -I -f package.json -e 'this.scripts.format="prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,md}\""'
-node ../update-package-json.js $APP_NAME
+curl -L https://gist.githubusercontent.com/HlaKarki/850999ba95b1df6d54f70b4a2c51cf08/raw/706427dc11f49da6759c6d60f887e3fbb5896e91/update-package-json.js -o update-package-json.js
+node update-package-json.js
 
 
 ########### Here is where the configuration tailored to StartOut organization begins ###########
 
 # Create new directories and file in the src folder
 mkdir src/assets src/components src/pages src/redux src/pages/landing src/pages/error404
+mkdir src/components/header src/components/footer
 touch src/exports.js src/pages/landing/landing.jsx src/pages/error404/error404.jsx
 touch src/components/header/header.jsx src/components/footer/footer.jsx
 
@@ -108,6 +108,26 @@ export const App = () => {
         </main>
     );
 };
+EOT
+
+cat <<EOT > src/index.js
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import './index.css'
+import { App } from './App'
+import reportWebVitals from './reportWebVitals'
+
+const root = ReactDOM.createRoot(document.getElementById('root'))
+root.render(
+    <React.StrictMode>
+        <App />
+    </React.StrictMode>,
+)
+
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals()
 EOT
 
 cat <<EOT > src/pages/landing/landing.jsx
