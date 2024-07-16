@@ -63,8 +63,9 @@ cat <<EOT > .eslintrc.json
 EOT
 
 # Update package.json to add lint and format scripts
-npx json -I -f package.json -e 'this.scripts.lint="eslint \"src/**/*.{js,ts,tsx}\""'
-npx json -I -f package.json -e 'this.scripts.format="prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,md}\""'
+#npx json -I -f package.json -e 'this.scripts.lint="eslint \"src/**/*.{js,ts,tsx}\""'
+#npx json -I -f package.json -e 'this.scripts.format="prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,md}\""'
+node ../update-package-json.js $APP_NAME
 
 
 ########### Here is where the configuration tailored to StartOut organization begins ###########
