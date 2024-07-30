@@ -72,7 +72,7 @@ Here is an overview of the folder structure in this project:
 
 ## Setup and Usage
 
-### Option 1: Clone the Repository
+## Option 1: Clone the Repository
 
 First, clone the repository and install the dependencies:
 
