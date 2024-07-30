@@ -1,7 +1,7 @@
 
 # React Project Setup Script
 
-This script automates the setup of a new React project, optionally including TypeScript and Tailwind CSS. It installs necessary dependencies, configures Prettier and ESLint, adds useful scripts to `package.json`, and sets up Tailwind CSS if specified. It also organizes the project structure by creating directories and files for components, assets, and pages.
+This script automates the setup of a new React project, optionally including TypeScript. It installs necessary dependencies, configures Prettier and ESLint, adds useful scripts to `package.json`, and sets up Tailwind CSS. It also organizes the project structure by creating directories and files for components, assets, and pages.
 
 ## Prerequisites
 
@@ -10,7 +10,7 @@ This script automates the setup of a new React project, optionally including Typ
 ## Features
 
 - TypeScript Support: Optionally creates a TypeScript-based project.
-- Tailwind CSS Setup: Integrates Tailwind CSS if enabled.
+- Tailwind CSS Setup: Integrates Tailwind CSS.
 - Prettier Configuration: Sets up Prettier for code formatting.
 - ESLint Configuration: Configures ESLint for linting based on best practices and integrates with Prettier.
 - Directory Structure: Automatically creates directories and files for a standard project setup.
@@ -34,4 +34,3 @@ This script automates the setup of a new React project, optionally including Typ
 The script uses the following environment variables to customize the project setup (more will be added in the future):
 - `MODULE_REACT_APP_NAME`: Sets the application name (default: `startout-react-app`).
 - `MODULE_REACT_USE_TYPESCRIPT`: Enables TypeScript if set to true (default: false).
-- `MODULE_REACT_USE_TAILWIND`: Integrates Tailwind CSS if set to true (default: true).
