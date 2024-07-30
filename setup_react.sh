@@ -3,14 +3,9 @@
 # Variables from the environment
 APP_NAME=${MODULE_REACT_APP_NAME:-startout-react-app}
 USE_TYPESCRIPT=${MODULE_REACT_USE_TYPESCRIPT:-false}
-USE_TAILWIND=${MODULE_REACT_USE_TAILWIND:-true}
 
 # Create a new React project with or without TypeScript based on the environment variable
-if [ "$USE_TYPESCRIPT" = "true" ]; then
-  npx create-react-app $APP_NAME --template typescript
-else
-  npx create-react-app $APP_NAME
-fi
+npx create-react-app $APP_NAME --template typescript
 
 cd $APP_NAME
 
@@ -21,21 +16,43 @@ npm install --save-dev react-router-dom
 ##########################################
 
 # Install Tailwind CSS if the environment variable is set to true
-if [ "$USE_TAILWIND" = "true" ]; then
-  npm install --save-dev tailwindcss postcss autoprefixer
-  npx tailwindcss init -p
+npm install --save-dev tailwindcss postcss autoprefixer
+npx tailwindcss init -p
 
-  # Replace the contents of the main CSS file with Tailwind CSS imports
-  echo "@tailwind base;" > src/index.css
-  echo "@tailwind components;" >> src/index.css
-  echo "@tailwind utilities;" >> src/index.css
-fi
+# Replace the contents of the main CSS file with Tailwind CSS imports
+echo "@tailwind base;" > src/index.css
+echo "@tailwind components;" >> src/index.css
+echo "@tailwind utilities;" >> src/index.css
+
+echo '/** @type {import(tailwindcss).Config} */
+module.exports = {
+    content: ["./src/**/*.{html,js,jsx,ts,tsx}"], theme: {
+        extend: {
+            colors: {
+                "primary-main": "#D57B1D", "primary-light": "#ffac28", "primary-dark": "#955614",
+                "secondary-main": "", "secondary-light": "", "secondary-dark": "",
+                "accent-main": "", "accent-light": "", "accent-dark": "",
+                "neutral-main": "#443A3F", "neutral-light": "#ffffef", "neutral-dark": "#221d1f",
+                "success-main": "", "success-light": "", "success-dark": "",
+                "warning-main": "", "warning-light": "", "warning-dark": "",
+                "error-main": "", "error-light": "", "error-dark": "",
+                "info-main": "", "info-light": "", "info-dark": "",
+                "tertiary-main": "", "tertiary-light": "", "tertiary-dark": "",
+                "background-primary": "", "background-secondary": "", "background-accent": "",
+                "border-primary": "", "border-secondary": "", "border-accent": "",
+                "text-primary": "", "text-secondary": "", "text-muted": "",
+                "hover-primary": "", "active-primary": "", "disabled-primary": "",
+            }
+
+        },
+    }, plugins: [],
+}' > tailwind.config.js
 
 # Create Prettier configuration file
 cat <<EOT > .prettierrc
 {
   "semi": false,
-  "singleQuote": true,
+  "singleQuote": false,
   "trailingComma": "all",
   "printWidth": 80,
   "tabWidth": 4
@@ -75,9 +92,7 @@ mkdir src/components/header src/components/footer
 touch src/exports.js src/pages/landing/landing.jsx src/pages/error404/error404.jsx
 touch src/components/header/header.jsx src/components/footer/footer.jsx
 
-# If TypeScript is not being used, replace the content of App.js
-if [ "$USE_TYPESCRIPT" = "false" ]; then
-  cat <<EOT > src/App.js
+cat <<EOT > src/App.js
 import { createBrowserRouter, RouterProvider, ScrollRestoration } from "react-router-dom";
 import * as exports from "./exports.js";
 import "./index.css"
@@ -131,48 +146,40 @@ reportWebVitals()
 EOT
 
 cat <<EOT > src/pages/landing/landing.jsx
-import { NavLink } from "react-router-dom";
-import * as exports from "../../exports.js"
-
 export default function Landing() {
     return (
-        <div className="flex flex-col justify-center flex-grow text-center mt-[5vh]">
-            <h1 className="text-4xl font-bold text-gray-200 mb-12 mt-8 select-none">Welcome to StartOut!</h1>
+        <div className="bg-neutral-main h-screen w-screen text-neutral-light">
+            <h1 className="h-screen flex justify-center items-center text-6xl">
+                Welcome to StartOut!
+            </h1>
         </div>
-    );
+    )
 }
 EOT
 
 cat <<EOT > src/pages/error404/error404.jsx
-import { NavLink } from 'react-router-dom';
+import { NavLink } from "react-router-dom"
 
-export default function Error404 () {
+export default function Error404() {
     return (
-        <div className="fixed inset-0 flex items-center justify-center p-5 bg-gray-900 bg-opacity-50">
-            <div className={"flex flex-col items-center text-center select-none " +
-                "bg-gradient-to-b from-gray-800 to-gray-600 px-4 py-10 rounded-lg shadow-xl"}>
-                <h1
-                    className={"text-8xl font-extrabold text-transparent bg-clip-text " +
-                        "bg-gradient-to-r from-gray-300 to-gray-400"}
-                >
-                    404
-                </h1>
-                <p className="mt-3 mb-5 text-xl font-semibold text-gray-200 shadow-md p-3 rounded-lg bg-opacity-50 bg-black">
+        <div className="bg-neutral-main fixed inset-0 flex items-center justify-center p-5 ">
+            <div
+                className={
+                    "bg-neutral-dark bg-opacity-50 py-10 px-8 rounded-md text-neutral-light flex flex-col gap-4"
+                }
+            >
+                <h1 className={"text-4xl"}>Error 404 :(</h1>
+                <p className="">
                     Oops! The page you're looking for isn't here.
                 </p>
-                <NavLink
-                    to="/"
-                    className={"bg-pf-setting text-gray-100 font-bold py-3 px-6 rounded-full " +
-                        "hover:bg-pf-setting-h select-none cursor-pointer"}
-                >
-                    <div
-                    >
-                        🏠 Take Me Home
-                    </div>
-                </NavLink>
+                <button className={"bg-primary-main p-2 rounded-md"}>
+                    <NavLink to="/" className={""}>
+                        <div>🏠 Take Me Home</div>
+                    </NavLink>
+                </button>
             </div>
         </div>
-    );
+    )
 }
 EOT
 
@@ -182,7 +189,7 @@ import Error404 from "./pages/error404/error404";
 
 export { Landing, Error404 };
 EOT
-fi
+
 #######################################
 
 # Run format and lint scripts
